@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proyectoagro/bloc/maquinaria_cubit.dart';
+import 'package:proyectoagro/bloc/maquinaria_cb.dart';
 
 class MaquinariaPage extends StatefulWidget {
   @override
@@ -17,7 +17,6 @@ class _MaquinariaPageState extends State<MaquinariaPage> {
   void initState() {
     super.initState();
 
-    // Escucha cambios en el campo de búsqueda
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -29,14 +28,11 @@ class _MaquinariaPageState extends State<MaquinariaPage> {
   }
 
   void _onSearchChanged() {
-    // Limpiar el debounce anterior si existe
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    // Crear un nuevo debounce de 500ms antes de ejecutar la búsqueda
     _debounce = Timer(const Duration(milliseconds: 500), () {
       final searchTerm = _searchController.text;
 
-      // Llama al Cubit para realizar la búsqueda solo si el término tiene más de 2 caracteres
       if (searchTerm.length >= 2 || searchTerm.isEmpty) {
         context.read<MaquinariaCubit>().fetchMaquinarias(1, 10, search: searchTerm);
       }
@@ -47,7 +43,7 @@ class _MaquinariaPageState extends State<MaquinariaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Listado de Maquinarias'),
+        title: Text('Lista de Maquinarias'),
       ),
       body: Column(
         children: [
@@ -57,7 +53,7 @@ class _MaquinariaPageState extends State<MaquinariaPage> {
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Buscar Maquinaria',
-                hintText: 'Ingresa un término de búsqueda',
+                hintText: 'Ingresa una Maquinaria',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
@@ -97,7 +93,7 @@ class _MaquinariaPageState extends State<MaquinariaPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<MaquinariaCubit>().fetchMaquinarias(1, 10); // Puedes ajustar el tamaño de la página aquí.
+          context.read<MaquinariaCubit>().fetchMaquinarias(1, 10); 
         },
         child: Icon(Icons.refresh),
       ),
